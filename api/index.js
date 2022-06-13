@@ -1,16 +1,17 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const dotenv = require("dotenv"); // 
-const helmet = require("helmet"); //
-const morgan = require("morgan"); // 
+const dotenv = require("dotenv"); // permet de .env
+const helmet = require("helmet"); // aide a secu l'app en def des entete http
+const morgan = require("morgan"); // permet d'enregistrer des demandes http
 const multer = require("multer"); // pour les photos
 const userRoute = require("./routes/users");
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
 const router = express.Router();
 const path = require("path");
-const cors = require('cors');
+const cors = require('cors'); // permet d'autoriser certaine chose comment method get etc 
+
 
 dotenv.config();
 const corsOptions = {

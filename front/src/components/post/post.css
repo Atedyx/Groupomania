@@ -14,6 +14,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-direction: column;
 }
 
 .postTopLeft {
@@ -75,4 +76,10 @@
     cursor: pointer;
     border-bottom: 1px dashed gray;
     font-size: 15px;
+}
+
+@media screen and (max-width: 800px) {
+  .testt {
+    width: 60%;
+  }
 }

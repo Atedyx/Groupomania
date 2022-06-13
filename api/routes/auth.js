@@ -1,12 +1,12 @@
-const router = require("express").Router();
+const router = require("express").Router(); // importation de express
 const User = require("../models/User");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt"); // Importation de bcrypt qui permet de hahs le mdp
 
 //REGISTER
 router.post("/register", async (req, res) => {
   try {
     //generate new password
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(10); 
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
     //create new user
@@ -40,6 +40,10 @@ router.post("/login", async (req, res) => {
     res.status(500).json(err)
   }
 });
+
+
+// logout 
+
 router.get("/logout", async (req, res) => {
   res.cookie('jwt', '', { maxAge: 1 });
   res.redirect('/login');

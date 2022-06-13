@@ -6,7 +6,7 @@ import {
   EmojiEmotions,
   Cancel,
 } from "@mui/icons-material";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react"; // useRef renvoie un objet ref modifiable
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 

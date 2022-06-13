@@ -6,8 +6,8 @@ import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function Feed({ username }) {
-  const [posts, setPosts] = useState([]);
-  const { user } = useContext(AuthContext);
+  const [posts, setPosts] = useState([]); // UseState est un Hook permet d’ajouter l’état local React à des fonctions 
+  const { user } = useContext(AuthContext); // useContext me fourni les données dans AuthContext
 
   useEffect(() => {
     const fetchPosts = async () => {

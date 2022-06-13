@@ -16,7 +16,7 @@ export const AuthContextProvider = ({ children }) => {
   
   useEffect(()=>{
     localStorage.setItem("user", JSON.stringify({user:state.user, token:state.token}))
-  },[state.user])
+  },[state.user]) // La méthode JSON.stringify() convertit une valeur JavaScript en chaîne JSON.
   
   return (
     <AuthContext.Provider

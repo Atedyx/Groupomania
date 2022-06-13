@@ -1,18 +1,22 @@
 import "./post.css";
-import { MoreVert } from "@mui/icons-material";
+import { MoreVert } from "@mui/icons-material"; // Icon
 import { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import { format } from "timeago.js";
-import { Link } from "react-router-dom";
+import axios from "axios"; // axios permet de faire des apl api
+import { Link } from "react-router-dom"; // Permet d'envoyer un bouton sur un lien comme <a>
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from 'react-router-dom'
+import dayjs from "dayjs"; //permet d'afficher par exemple il y a 1h
+require("../../../node_modules/dayjs/locale/fr");
+const relativeTime = require("../../../node_modules/dayjs/plugin/relativeTime");
+dayjs.extend(relativeTime);
+
+
+
 export default function Post({ post }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState({});
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER; // Lien pour img
   const { user: currentUser } = useContext(AuthContext);
-  const navigate = useNavigate()
 
   useEffect(() => {
     setIsLiked(post.likes.includes(currentUser._id));
@@ -29,6 +33,11 @@ export default function Post({ post }) {
     fetchUser();
   }, [post.userId]);
 
+
+  
+
+
+
   const likeHandler = () => {
     try {
       axios.put("http://localhost:4200/api/posts/" + post._id + "/like", { userId: currentUser._id });
@@ -38,12 +47,24 @@ export default function Post({ post }) {
   };
 
   const deletePost = () => {
-    axios.delete('http://localhost:4200/api/posts/'+ post._id, { params: {
+    axios.delete('http://localhost:4200/api/posts/'+ post._id, {
       userId: post.userId,
-    }})
+    })
     .then(response => response.status)
     .catch(err => console.warn(err));
   }
+  const [userDesc, setUserDesc] = useState()
+  const modifPost = () => {
+    axios.put('http://localhost:4200/api/posts/'+ post._id,  {
+      userId: post.userId,
+      desc: userDesc
+    })
+    .then(response => response.status)
+    .catch(err => console.warn(err));
+    window.location.reload()
+  }
+
+
   return (
     <div className="post">
       <div className="postWrapper">
@@ -61,10 +82,11 @@ export default function Post({ post }) {
               />
             </Link>
             <span className="postUsername">{user?.username}</span>
-            <span className="postDate">{format(post.createdAt)}</span>
+            <span className="postDate">{dayjs(post.createdAt).locale("fr").fromNow()}</span>
           </div>
           <div className="postTopRight">
-            <MoreVert />
+            <input className="testt" onChange={(e) => { setUserDesc(e.target.value) }} type="text" placeholder="Modifier votre post ici" />
+            <button onClick={modifPost}>Modifier</button>
           </div>
         </div>
         <div className="postCenter">
@@ -80,8 +102,10 @@ export default function Post({ post }) {
               alt=""
             />
             <span className="postLikeCounter">{like} personnes ont liké</span>
-            <button onClick={()=>deletePost(post.userId)}>suprr</button>
+            
           </div>
+          <button onClick={deletePost}>Supprimer le post</button>
+            
         </div>
       </div>
     </div>

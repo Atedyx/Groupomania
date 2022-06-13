@@ -2,7 +2,7 @@ import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Profile from "./pages/profile/Profile";
 import Register from "./pages/register/Register";
-import { Fragment } from "react";
+
 import { Navigate} from "react-router"
 import {
   BrowserRouter as Router,

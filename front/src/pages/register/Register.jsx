@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRef } from "react";
 import "./register.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // useNavigate permet de renvoyer quelque sur une page
 import { Link } from "react-router-dom";
 
 
@@ -15,7 +15,7 @@ export default function Register() {
   const handleClick = async (e) => {
     e.preventDefault();
     if (passwordAgain.current.value !== password.current.value) {
-      passwordAgain.current.setCustomValidity("Passwords don't match!");
+      passwordAgain.current.setCustomValidity("Passwords don't match!"); // defini le msg
     } else {
       const user = {
         username: username.current.value,
@@ -24,7 +24,7 @@ export default function Register() {
       };
       try {
         await axios.post("http://localhost:4200/api/auth/register", user);
-        history("/login");
+        history("/login"); // par exemple ici au /login
       } catch (err) {
         console.log(err);
       }

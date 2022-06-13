@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from 'axios'
-import cookie from "js-cookie"
+import cookie from "js-cookie" // Une API JavaScript simple et légère pour gérer les cookies
 
 export default function Topbar() {
   const { user } = useContext(AuthContext);
@@ -24,6 +24,9 @@ export default function Topbar() {
     localStorage.removeItem("user");
     window.location = "/login";
   };
+
+
+  
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
