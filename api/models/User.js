@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const {isEmail} = require('validator')
 const UserSchema = new mongoose.Schema(
   {
     username: {
@@ -14,6 +14,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
       max: 50,
       unique: true,
+      validate: [isEmail],
     },
     password: {
       type: String,
@@ -28,14 +29,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    followers: {
-      type: Array,
-      default: [],
-    },
-    followings: {
-      type: Array,
-      default: [],
-    },
+    
     isAdmin: {
       type: Boolean,
       default: false,

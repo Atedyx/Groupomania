@@ -2,6 +2,7 @@ const router = require("express").Router(); // importation de express
 const User = require("../models/User");
 const bcrypt = require("bcrypt"); // Importation de bcrypt qui permet de hahs le mdp
 
+
 //REGISTER
 router.post("/register", async (req, res) => {
   try {
@@ -48,5 +49,7 @@ router.get("/logout", async (req, res) => {
   res.cookie('jwt', '', { maxAge: 1 });
   res.redirect('/login');
 });
+
+
 
 module.exports = router;

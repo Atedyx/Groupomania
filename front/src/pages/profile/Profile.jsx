@@ -18,6 +18,17 @@ export default function Profile() {
     fetchUser();
   }, [username]);
 
+  const [userUsername, setUserUsername] = useState()
+  const modifPost = () => {
+    axios.put('http://localhost:4200/api/users/' + user._id, {
+      userId: user._id,
+      username: userUsername,
+      isAdmin: user.isAdmin
+    })
+      .then(response => response.status)
+      .catch(err => console.warn(err));
+    window.location.reload()
+  }
   return (
     <>
       <Topbar />
@@ -46,7 +57,6 @@ export default function Profile() {
             </div>
             <div className="profileInfo">
               <h4 className="profileInfoName">{user?.username}</h4>
-              <span className="profileInfoDesc">{user.desc}</span>
             </div>
           </div>
           <div className="profileRightBottom">
