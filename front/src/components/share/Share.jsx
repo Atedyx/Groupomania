@@ -23,6 +23,10 @@ export default function Share() {
       desc: desc.current.value,
     };
     if (file) {
+      const token = JSON.parse(localStorage.getItem('user')).user.token
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
       const data = new FormData();
       const fileName = Date.now() + file.name;
       data.append("name", fileName);
@@ -30,12 +34,16 @@ export default function Share() {
       newPost.img = fileName;
       console.log(newPost);
       try {
-        await axios.post("http://localhost:4200/api/upload", data);
+        await axios.post("http://localhost:4200/api/upload", data, config,  );
       } catch (err) {}
       console.log(data)
     }
     try {
-      await axios.post("http://localhost:4200/api/posts", newPost);
+      const token = JSON.parse(localStorage.getItem('user')).user.token
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+      await axios.post("http://localhost:4200/api/posts", newPost, config);
       
     } catch (err) {}
     window.location.reload()

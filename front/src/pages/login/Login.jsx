@@ -35,6 +35,7 @@ export default function Login() {
               className="loginInput"
               ref={email}
             />
+            <span id="error"></span>
             <input
               placeholder="Password"
               type="password"

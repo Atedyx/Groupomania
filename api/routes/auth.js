@@ -1,7 +1,7 @@
 const router = require("express").Router(); // importation de express
 const User = require("../models/User");
 const bcrypt = require("bcrypt"); // Importation de bcrypt qui permet de hahs le mdp
-
+const jwt = require("jsonwebtoken")
 
 //REGISTER
 router.post("/register", async (req, res) => {
@@ -34,9 +34,13 @@ router.post("/login", async (req, res) => {
     const validPassword = await bcrypt.compare(req.body.password, user.password)
     !validPassword && res.status(400).json("wrong password")
 
-    const token = "TOKEN"// TODO with jwt
-
+    const token =  jwt.sign(         // .sign permet d'encoder un nouveau token
+      { userId: user._id, },
+      'RANDOM_TOKEN_SECRET',  // encodage avec des caractères secrets
+      { expiresIn: '24h' }
+    )
     res.status(200).json({user,token})
+    
   } catch (err) {
     res.status(500).json(err)
   }

@@ -2,10 +2,11 @@ const router = require("express").Router();
 const Post = require("../models/Post");
 const User = require("../models/User");
 const auth = require('../middleware/auth')
+const fs = require('fs')
 
 //create a post
 
-router.post("/", async (req, res,auth) => {
+router.post("/", async (req, res) => {
   const newPost = new Post(req.body);
   try {
     const savedPost = await newPost.save();
@@ -14,46 +15,48 @@ router.post("/", async (req, res,auth) => {
     res.status(500).json(err);
   }
 });
+
 //update a post
 
-router.put("/:id", async (req, res,auth) => {
+router.put("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
   
     if (post.userId === req.body.userId || req.body.isAdmin ) {
       
-      await post.updateOne({ $set: req.body });
+      await post.updateOne({ $set: {desc: req.body.desc} });
       res.status(200).json("the post has been updated");
     } else {
       res.status(403).json("you can update only your post");
     }  
-    
-    
   } catch (err) {
     res.status(500).json(err);
   }
 });
 //delete a post
 
-router.delete("/:id", async ( req, res,auth) => {
-    try {
-      const post = await Post.findById(req.params.id);
-      console.log(post.userId, req.body.userId)
-      if (post.userId === req.body.userId || req.body.isAdmin) {
-        await post.deleteOne();
-        return res.status(200).json("the post has been deleted");
-      } else if (!req.body.userId) {
-        return res.status(409).json("user missing")
-      } else {
-        return res.status(403).json("you can delete only your post");
-      } 
-    } catch (err) {
-      return res.status(500).json(err);
-    }
-  });
+router.delete("/:id", async ( req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    console.log(post.userId, req.body.userId)
+    if (post.userId === req.body.userId || req.body.isAdmin) {
+     /// const filename = post.img.split('/images/')[1];
+   ///   fs.unlink(`images/${filename}`, () => {
+      await post.deleteOne();
+      return res.status(200).json("the post has been deleted");
+   //   })
+    } else if (!req.body.userId) {
+      return res.status(409).json("user missing")
+    } else {
+      return res.status(403).json("you can delete only your post");
+    } 
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
 //like / dislike a post
 
-router.put("/:id/like", async (req, res,auth) => {
+router.put("/:id/like",  async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (!post.likes.includes(req.body.userId)) {
@@ -69,7 +72,7 @@ router.put("/:id/like", async (req, res,auth) => {
 });
 //get a post
 
-router.get("/:id", async (req, res, auth) => {
+router.get("/:id", auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     res.status(200).json(post);
@@ -80,7 +83,7 @@ router.get("/:id", async (req, res, auth) => {
 
 //get all the posts
 
-router.get("/", async (req, res, auth) => {
+router.get("/",  async (req, res) => {
   try {
     
     const posts = await Post.find();
@@ -93,7 +96,7 @@ router.get("/", async (req, res, auth) => {
 
 //get user's all posts
 
-router.get("/profile/:username", async (req, res,auth) => {
+router.get("/profile/:username", auth, async (req, res) => {
   try {
     const user = await User.findOne({ username: req.params.username });
     const posts = await Post.find({ userId: user._id });

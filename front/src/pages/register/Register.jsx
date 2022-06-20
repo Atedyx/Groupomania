@@ -31,6 +31,21 @@ export default function Register() {
     }
   };
 
+  function errorMessage() {
+    var error = document.getElementById("error")
+    if (isNaN(document.getElementById("test").value)) 
+    {
+
+        // Changing HTML to draw attention
+        error.innerHTML = "<span style='color: red;'>"+
+                    "L'email saisie est invalide !</span>"
+    } else {
+        error.innerHTML = ""
+    }
+  }
+
+  
+
   return (
     <div className="login">
       <div className="loginWrapper">
@@ -41,7 +56,7 @@ export default function Register() {
           </span>
         </div>
         <div className="loginRight">
-          <form className="loginBox" onSubmit={handleClick}>
+          <form className="loginBox" onClick={errorMessage} onSubmit={handleClick}>
             <input
               placeholder="Pseudo"
               required
@@ -54,7 +69,9 @@ export default function Register() {
               ref={email}
               className="loginInput"
               type="email"
+              id="test"
             />
+            <span id="error"></span>
             <input
               placeholder="Mot de passe"
               required

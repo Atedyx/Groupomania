@@ -11,8 +11,14 @@ export default function Feed({ username }) {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await axios.get("http://localhost:4200/api/posts/")
        
+      const token = JSON.parse(localStorage.getItem('user')).user.token
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+      console.log(config)
+      const res = await axios.get("http://localhost:4200/api/posts/", config )
+     
       
       setPosts(
         res.data.sort((p1, p2) => {

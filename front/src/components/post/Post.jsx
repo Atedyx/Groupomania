@@ -25,10 +25,11 @@ export default function Post({ post }) {
 
 
   const deleteImg = () => {
-    axios.delete('http://localhost:4200/api/posts/' + post._id, {
-      headers: {
-        Authorization: 'Bearer ${token}'
-      },
+    const token = JSON.parse(localStorage.getItem('user')).user.token
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+    axios.delete('http://localhost:4200/api/posts/' + post._id, config,  {
       data: {
         userId: currentUser.user._id,
         img: currentUser.user.img
@@ -47,8 +48,9 @@ export default function Post({ post }) {
 
   useEffect(() => {
     const fetchUser = async () => {
+      const token = JSON.parse(localStorage.getItem('user')).user.token
       const config = {
-        headers: { Authorization: 'Bearer ${token}' }
+        headers: { Authorization: `Bearer ${token}` }
       };
       const res = await axios.get(`http://localhost:4200/api/users/?userId=${post.userId}`, config);
       setUser(res.data);
@@ -59,10 +61,11 @@ export default function Post({ post }) {
 
   useEffect(() => {
     const fetchUser = async () => {
+      const token = JSON.parse(localStorage.getItem('user')).user.token
       const config = {
-        headers: { Authorization: 'Bearer ${token}' }
+        headers: { Authorization: `Bearer ${token}` }
       };
-      const res = await axios.get('http://localhost:4200/api/posts/');
+      const res = await axios.get('http://localhost:4200/api/posts/', config);
       setPosts(res.data);
     };
     fetchUser();
@@ -72,7 +75,11 @@ export default function Post({ post }) {
 
   const likeHandler = () => {
     try {
-      axios.put("http://localhost:4200/api/posts/" + post._id + "/like", { userId: currentUser.user._id });
+      const token = JSON.parse(localStorage.getItem('user')).user.token
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+      axios.put("http://localhost:4200/api/posts/" + post._id + "/like", config,  { userId: currentUser.user._id });
       
     } catch (err) { }
     setLike(isLiked ? like - 1 : like + 1);
@@ -83,31 +90,37 @@ export default function Post({ post }) {
   };
 
   const deletePost = () => {
+    const token = JSON.parse(localStorage.getItem('user')).user.token
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
     axios.delete('http://localhost:4200/api/posts/' + post._id, {
-      headers: {
-        Authorization: 'Bearer ${token}'
-      },
+      
       data: {
         userId: currentUser.user._id,
         isAdmin: currentUser.user.isAdmin
       }
     });
 
-    window.location.reload()
+   // window.location.reload()
   }
 
 
   const [userDesc, setUserDesc] = useState()
   const modifPost = () => {
-    axios.put('http://localhost:4200/api/posts/' + post._id, {
+    const token = JSON.parse(localStorage.getItem('user')).user.token
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+    const test = axios.put('http://localhost:4200/api/posts/' + post._id, {
       userId: currentUser.user._id,
       desc: userDesc,
       isAdmin: currentUser.user.isAdmin
     })
       .then(response => response.status)
       .catch(err => console.warn(err));
-    console.log(currentUser._id)
-    window.location.reload()
+    console.log(currentUser)
+    // window.location.reload()
   }
 
 
