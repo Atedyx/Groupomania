@@ -24,24 +24,6 @@ export default function Post({ post }) {
   const [file, setFile] = useState(null);
 
 
-  const deleteImg = () => {
-    const token = JSON.parse(localStorage.getItem('user')).user.token
-      const config = {
-        headers: { Authorization: `Bearer ${token}` }
-      };
-    axios.delete('http://localhost:4200/api/posts/' + post._id, config,  {
-      data: {
-        userId: currentUser.user._id,
-        img: currentUser.user.img
-      }
-    })
-  };
-
-
-
-
-
-
   useEffect(() => {
     setIsLiked(post.likes.includes(currentUser.user._id));
   }, [currentUser.user._id, post.likes]);
@@ -79,7 +61,7 @@ export default function Post({ post }) {
       const config = {
         headers: { Authorization: `Bearer ${token}` }
       };
-      //axios.put("http://localhost:4200/api/posts/" + post._id + "/like", config,  { userId: currentUser.user._id });
+    
       axios({
         method: 'put', //you can set what request you want to be
         url: "http://localhost:4200/api/posts/" + post._id + "/like",
@@ -99,22 +81,15 @@ export default function Post({ post }) {
   const deletePost = () => {
     const token = JSON.parse(localStorage.getItem('user')).user.token
     axios({
-      method: 'delete', //you can set what request you want to be
+      method: 'delete', 
       url: "http://localhost:4200/api/posts/" + post._id,
       data: { userId: currentUser.user._id, isAdmin: currentUser.user.isAdmin },
       headers: {
         Authorization: 'Bearer ' + token
       }
     })
-    /*axios.delete('http://localhost:4200/api/posts/' + post._id, config, {
-      
-      data: {
-        userId: currentUser.user._id,
-        isAdmin: currentUser.user.isAdmin
-      } 
-    }); */
 
-   // window.location.reload()
+    window.location.reload()
   }
 
 
@@ -158,7 +133,6 @@ export default function Post({ post }) {
           <button className="dropbtn"><MoreVertIcon/></button>
           <div className="dropdown-content">
             <button onClick={deletePost}>Supprimer le post</button>
-            <button onClick={deleteImg}>Supprimer l'image</button>
           </div>
           </div>
           

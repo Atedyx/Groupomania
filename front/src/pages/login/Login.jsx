@@ -4,11 +4,12 @@ import { loginCall } from "../../apiCalls";
 import { AuthContext } from "../../context/AuthContext";
 import {Link} from "react-router-dom"
 
+
 export default function Login() {
   const email = useRef();
   const password = useRef();
   const { isFetching, dispatch } = useContext(AuthContext);
-
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER
   const handleClick = (e) => {
     e.preventDefault();
     loginCall(
@@ -21,10 +22,8 @@ export default function Login() {
     <div className="login">
       <div className="loginWrapper">
         <div className="loginLeft">
-          <h3 className="loginLogo">Groupomania</h3>
-          <span className="loginDesc">
-            Bienvenue sur Groupomania
-          </span>
+          <img className="logoGp" src={`${PF}icon-left-font-monochrome-black.png`}></img>
+          
         </div>
         <div className="loginRight">
           <form className="loginBox" onSubmit={handleClick}>

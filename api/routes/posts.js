@@ -56,7 +56,7 @@ router.delete("/:id",auth, async ( req, res) => {
 router.put("/:id/like",auth,  async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    if (!post.likes.includes(req.body.userId)) {
+    if (!post.likes.includes(req.body.userId)) { // permet d'identifier s'il le tableau contient une valeur ou non si oui renvoie true sinon false
       await post.updateOne({ $push: { likes: req.body.userId } });
       res.status(200).json("The post has been liked");
     } else {

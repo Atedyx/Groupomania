@@ -11,6 +11,7 @@ export default function Register() {
   const password = useRef();
   const passwordAgain = useRef();
   const history = useNavigate();
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -50,10 +51,7 @@ export default function Register() {
     <div className="login">
       <div className="loginWrapper">
         <div className="loginLeft">
-          <h3 className="loginLogo">Groupomania</h3>
-          <span className="loginDesc">
-            Bienvenue sur Groupomania
-          </span>
+        <img className="logoGp" src={`${PF}icon-left-font-monochrome-black.png`}></img>
         </div>
         <div className="loginRight">
           <form className="loginBox" onClick={errorMessage} onSubmit={handleClick}>
