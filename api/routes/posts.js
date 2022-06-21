@@ -6,7 +6,7 @@ const fs = require('fs')
 
 //create a post
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const newPost = new Post(req.body);
   try {
     const savedPost = await newPost.save();
@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
 
 //update a post
 
-router.put("/:id", async (req, res) => {
+router.put("/:id",auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
   
@@ -35,16 +35,13 @@ router.put("/:id", async (req, res) => {
 });
 //delete a post
 
-router.delete("/:id", async ( req, res) => {
+router.delete("/:id",auth, async ( req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     console.log(post.userId, req.body.userId)
     if (post.userId === req.body.userId || req.body.isAdmin) {
-     /// const filename = post.img.split('/images/')[1];
-   ///   fs.unlink(`images/${filename}`, () => {
       await post.deleteOne();
       return res.status(200).json("the post has been deleted");
-   //   })
     } else if (!req.body.userId) {
       return res.status(409).json("user missing")
     } else {
@@ -56,7 +53,7 @@ router.delete("/:id", async ( req, res) => {
 });
 //like / dislike a post
 
-router.put("/:id/like",  async (req, res) => {
+router.put("/:id/like",auth,  async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (!post.likes.includes(req.body.userId)) {
@@ -83,7 +80,7 @@ router.get("/:id", auth, async (req, res) => {
 
 //get all the posts
 
-router.get("/",  async (req, res) => {
+router.get("/",auth,  async (req, res) => {
   try {
     
     const posts = await Post.find();

@@ -79,8 +79,15 @@ export default function Post({ post }) {
       const config = {
         headers: { Authorization: `Bearer ${token}` }
       };
-      axios.put("http://localhost:4200/api/posts/" + post._id + "/like", config,  { userId: currentUser.user._id });
-      
+      //axios.put("http://localhost:4200/api/posts/" + post._id + "/like", config,  { userId: currentUser.user._id });
+      axios({
+        method: 'put', //you can set what request you want to be
+        url: "http://localhost:4200/api/posts/" + post._id + "/like",
+        data: { userId: currentUser.user._id },
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      })
     } catch (err) { }
     setLike(isLiked ? like - 1 : like + 1);
     console.log(like)
@@ -91,16 +98,21 @@ export default function Post({ post }) {
 
   const deletePost = () => {
     const token = JSON.parse(localStorage.getItem('user')).user.token
-      const config = {
-        headers: { Authorization: `Bearer ${token}` }
-      };
-    axios.delete('http://localhost:4200/api/posts/' + post._id, {
+    axios({
+      method: 'delete', //you can set what request you want to be
+      url: "http://localhost:4200/api/posts/" + post._id,
+      data: { userId: currentUser.user._id, isAdmin: currentUser.user.isAdmin },
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    })
+    /*axios.delete('http://localhost:4200/api/posts/' + post._id, config, {
       
       data: {
         userId: currentUser.user._id,
         isAdmin: currentUser.user.isAdmin
-      }
-    });
+      } 
+    }); */
 
    // window.location.reload()
   }
@@ -109,18 +121,18 @@ export default function Post({ post }) {
   const [userDesc, setUserDesc] = useState()
   const modifPost = () => {
     const token = JSON.parse(localStorage.getItem('user')).user.token
-    const config = {
-      headers: { Authorization: `Bearer ${token}` }
-    };
-    const test = axios.put('http://localhost:4200/api/posts/' + post._id, {
-      userId: currentUser.user._id,
-      desc: userDesc,
-      isAdmin: currentUser.user.isAdmin
+    axios({
+      method: 'put', //you can set what request you want to be
+      url: "http://localhost:4200/api/posts/" + post._id,
+      data: { userId: currentUser.user._id, desc: userDesc, isAdmin: currentUser.user.isAdmin },
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
     })
       .then(response => response.status)
       .catch(err => console.warn(err));
     console.log(currentUser)
-    // window.location.reload()
+     window.location.reload()
   }
 
 
